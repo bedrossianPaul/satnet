@@ -10,6 +10,7 @@
 #include <olsr_hello.h>
 #include <olsropts.h>
 #include <iru.h>
+#include <neighbor_table.h>
 #include <lwip/sys.h>
 #include <unistd.h>
 #include <lwip/ip_addr.h>
@@ -26,6 +27,9 @@ void* send_hello(void* arg) {
     while (1) {
         hello_msg_t *msg = malloc(sizeof(hello_msg_t));
         msg->timestamp = sys_now();
+        msg->willingness = WILLINGNESS_DEFAULT;
+        msg->neighbor_count = serialize_neighbors(msg->neighbors, sizeof(msg->neighbors));
+        msg->neighbor_count = 0;
     
         packet_t *packet = malloc(sizeof(packet_t));
         packet->dest_addr = &dest;
@@ -56,14 +60,15 @@ void* listen_hello(void* arg) {
         if (p == NULL) {
             printf("[ERROR] [OLSR] Failed to receive packet: NULL pointer\n");
         } else {
-            // TODO : Process the received packet 
             hello_msg_t *msg = (hello_msg_t *)p->payload;
-            printf("[LOG] [OLSR] Hello packet received from %s:%d\n", ip4addr_ntoa(p->src_addr), 1698);
-            printf("             - Timestamp: %u\n", msg->timestamp);
-            printf("             - Willingness: %u\n", msg->willingness);
-            printf("             - Neighbor count: %u\n", msg->neighbor_count);
-            for (int i = 0; i < msg->neighbor_count; i++) {
-                printf("             - Neighbor %d: %s\n", i, ip4addr_ntoa(&msg->neighbors[i]));
+            if (msg == NULL) {
+                printf("[ERROR] [OLSR] Failed to receive packet: NULL payload\n");
+            } else {
+                ip_addr_t ips[MAX_NEIGHBORS];
+                deserialize_neighbors(msg->neighbors, sizeof(msg->neighbors), ips);
+                add_neighbor(p->src_addr, msg->willingness, ips, msg->neighbor_count);
+                // TODO : remove that after testing
+                print_neighbors_table();
             }
             // Free the received packet
             free(p->src_addr);
@@ -81,6 +86,8 @@ void* listen_hello(void* arg) {
 void init_olsr_hello(int proc_id) {
     
     pthread_t listen_thread;  // Le thread qui va écouter
+
+    init_neighbor_table();
 
     // Crée un thread qui exécute listen_hello
     if (pthread_create(&listen_thread, NULL, listen_hello, (void*)&proc_id) != 0) {

@@ -11,6 +11,7 @@
 #define MAX_NEIGHBORS 16
 #define MAX_MPR 2
 #define HELLO_INTERVAL 5000 // ms
+#define TIMEOUT_NEIGHBOR 30000 // ms
 
 
 #define WILLINGNESS_ALWAYS 7

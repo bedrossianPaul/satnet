@@ -18,7 +18,7 @@ typedef struct {
     uint32_t timestamp;
     uint8_t willingness;
     uint8_t neighbor_count;
-    ip_addr_t neighbors[MAX_NEIGHBORS];
+    uint8_t neighbors[MAX_NEIGHBORS][sizeof(ip_addr_t)];
 } hello_msg_t;
 
 
