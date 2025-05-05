@@ -10,17 +10,42 @@
 
 #include <neighbor_table.h>
 #include <olsropts.h>
+#include <pthread.h>
+#include <unistd.h>
 
 static neighbors_table_t *neighbors_table = NULL;
+
+// TODO : Add a mutex to protect the neighbor table
+void *update_neighbor_timestamps(void *arg) {
+    while (1) {
+        for (uint32_t i = 0; i < neighbors_table->size; ) {
+            neighbors_table->neighbors[i].last_seen++;
+
+            if (neighbors_table->neighbors[i].last_seen > TIMEOUT_NEIGHBOR / 1000) {
+                neighbors_table->neighbors[i] = neighbors_table->neighbors[--neighbors_table->size];
+            } else {
+                i++;
+            }
+        }
+        sleep(1);
+    }
+    return NULL;
+}
 
 void init_neighbor_table() {
     // Initialize the neighbor table
     neighbors_table = malloc(sizeof(neighbors_table_t));
     if (neighbors_table == NULL) {
-        perror("[ERROR] [OLSR] Failed to allocate memory for neighbor table");
+        printf("[ERROR] [OLSR] Failed to allocate memory for neighbor table");
         exit(EXIT_FAILURE);
     }
     neighbors_table->size = 0;
+    pthread_t tid;
+    if (pthread_create(&tid, NULL, update_neighbor_timestamps, NULL) != 0) {
+        printf("[ERROR] [OLSR] Failed to create neighbor monitor thread");
+        exit(EXIT_FAILURE);
+    }
+    pthread_detach(tid);
 }
 
 void add_neighbor(ip_addr_t *ip, int willingness, ip_addr_t *neighbors, int neighbors_count) {
