@@ -29,4 +29,11 @@ typedef struct {
     void* payload;
 } packet_t;
 
+// Position format
+typedef struct {
+    double x;
+    double y;
+    double z;
+} position_t;
+
 #endif

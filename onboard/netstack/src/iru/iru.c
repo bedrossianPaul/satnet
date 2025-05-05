@@ -18,6 +18,7 @@
 #include <lwip/timeouts.h>
 #include <lwip/ip_addr.h>
 #include <string.h>
+#include <filter.h>
 #include <lwip/pbuf.h>
 
 static pthread_mutex_t send_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -88,9 +89,10 @@ void iru_udp_callback(
         return;
     }
 
-    packet_t *packet = deserialize_packet(p->payload, p->len);
+    packet_t *recv_packet = deserialize_packet(p->payload, p->len);
+    // Filter the packet (discard if not in range)
+    packet_t *packet = filter(recv_packet);
     if (packet == NULL) {
-        printf("[ERROR] [IRU] Failed to deserialize packet\n");
         pbuf_free(p);
         return;
     }
