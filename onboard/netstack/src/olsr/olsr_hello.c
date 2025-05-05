@@ -56,8 +56,7 @@ void* listen_hello(void* arg) {
         if (p == NULL) {
             printf("[ERROR] [OLSR] Failed to receive packet: NULL pointer\n");
         } else {
-            // TODO : Process the received packet
-            // For now, just print the received packet  
+            // TODO : Process the received packet 
             hello_msg_t *msg = (hello_msg_t *)p->payload;
             printf("[LOG] [OLSR] Hello packet received from %s:%d\n", ip4addr_ntoa(p->src_addr), 1698);
             printf("             - Timestamp: %u\n", msg->timestamp);
