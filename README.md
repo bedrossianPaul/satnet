@@ -24,7 +24,7 @@ This section describe the topics currently in development.
 
 - Support of OLSR **(work in progress)**
 
-- Support of TCP transport layer
+- Support of TCP transport layer **(not implemented)**
 
 - Subscribe/publish communication **(not implemented)**
 
@@ -85,7 +85,20 @@ To allow the communication between 192.168.1.2 and the rest of the network (i.e 
 
 #### Explaination of the **IRU** (*Internal Router Unit*)
 
-The **IRU** is a unit (threaded) designed to manage packet transmission. The lwIP stack in RAW API is not thread safe and work with *callback* style programming. The **IRU** make the interface between the lwIP RAW API and the netstack processus. Netstack processus design all of the processus on the nano-sat that need to communicate (internal communication and/or external communical). Every processus are registrated at the beginning and each processus can call the public API to send and receive packet. Note that lwIP is not *thread safe* and use *callback* style programming but IRU is design on **sequential programming** and is ***thread safe***. The **IRU** can send and receive packet through the network and use it own routing table to reach the destination. It is also in this module that packet are forward to the destination if the IP address of the destination is not the current IP address. If the source IP address is the current IP address, the packet is ignored. 
+The **IRU** is a unit (threaded) designed to manage packet transmission. 
+The lwIP stack in RAW API is not thread safe and work with *callback* style programming. 
+The **IRU** make the interface between the lwIP RAW API and the netstack processus. 
+Netstack processus design all of the processus on the nano-sat that need to communicate (internal communication and/or external communical). 
+Every processus are registrated at the beginning and each processus can call the public API to send and receive packet. 
+Note that lwIP is not *thread safe* and use *callback* style programming but IRU is design on **sequential programming** and is ***thread safe***. 
+The **IRU** can send and receive packet through the network and use it own routing table to reach the destination. 
+It is also in this module that packet are forward to the destination if the IP address of the destination is not the current IP address. 
+If the source IP address is the current IP address, the packet is ignored. 
+
+#### Explaination of the **FILTER**
+The **FILTER** is a module that allow the **IRU** to filter packet. 
+It is for test purpose only and allow to reveive or discard packet depending of the theorical mal setup in the conf files.
+Please refer to the section ***TODO*** to see how to configure the filter.
 
 #### UDP support
 
@@ -106,5 +119,7 @@ This part is specific to the routing algorithms implemented in our netstack. You
 ***TODO***
 
 ## Know issues
+
+- You must source the setup.sh script to have the correct environment variables on the nanosat each time you restart a tty by ssh. Maybe we should setup up the variables in the .bashrc file.
 
 ***TODO***
