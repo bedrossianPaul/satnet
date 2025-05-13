@@ -78,6 +78,17 @@ $(BUILD_DIR)/%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 
+TEST_SRC = $(wildcard tests/*.c)
+TEST_FILES = $(SRC_DIR)/src/table/table.c
+TEST_BIN = $(patsubst tests/%.c,build/tests/%,$(TEST_SRC))
+
+# Tests
+tests: $(TEST_BIN)
+
+build/tests/%: tests/%.c $(TEST_FILES)
+	@mkdir -p $(dir $@)
+	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
+
 # Clean
 clean:
 	rm -rf $(BUILD_DIR) $(TARGET)
