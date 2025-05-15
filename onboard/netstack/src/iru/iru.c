@@ -28,7 +28,7 @@ static ip_addr_t * src_ip = NULL;
 
 
 ip4_addr_t * get_next_hop_addr(packet_t *packet) {
-    // TODO : Implement the logic to get the next hop address
+    // TODO : Implement the logic to get the next hop address (ROUTER)
     return packet->dest_addr;
 }
 

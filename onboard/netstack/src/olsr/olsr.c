@@ -46,5 +46,3 @@ void olsr_init() {
     // tc_start(proc_tc_id); // Start the TC process
 
 }
-
-// TODO: penser a free les two_hop infos

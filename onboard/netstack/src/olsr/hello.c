@@ -103,12 +103,13 @@ void *listen_hello(void *arg) {
                     table_insert(args->one_hop_neighbors, id, &new_neighbor);
                 }
                 // TODO: Update the two hop neighbors and we are good to go
+                // TODO: Update the mprs_selectors
             }
             free_hello_msg(msg);
             free(p->payload);
             free(p);
         }
-        sleep(1); // Sleep for 1 second before checking again TODO : remove that
+        sleep(1); // TODO: remove that
     }
 }
 

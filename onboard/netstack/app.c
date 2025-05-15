@@ -6,6 +6,8 @@
 #include <custom_type.h>
 #include <unistd.h>
 
+// TODO : memory leak :/
+
 int main() {
 
     ip_addr_t ip;
