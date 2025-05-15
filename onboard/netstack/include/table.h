@@ -12,6 +12,7 @@
 #define TABLE_H
 
 #include <stdbool.h>
+#include <pthread.h>
 #include <stddef.h>
 
 // Default capacity of the table
@@ -31,6 +32,7 @@ typedef struct {
     int size;
     int capacity;
     size_t value_size;
+    pthread_mutex_t lock; // Mutex for thread safety
 } table_t;
 
 /*
@@ -119,4 +121,4 @@ void table_destroy(table_t *table);
 */
 void table_print_debug(table_t *table, void (*print_value)(void *));
 
-#endif /* TABLE_H */
+#endif

@@ -26,7 +26,7 @@ packet_t* filter(packet_t* p) {
         return NULL;
     }
     // Check if the source address is in the theorical range of the current nanosat
-    position_t * sender = get_postion(src_addr);
+    position_t * sender = get_position(src_addr);
     if (sender == NULL) {
         return NULL;
     }

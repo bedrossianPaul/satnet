@@ -9,6 +9,7 @@
 */
 
 #include <pos.h>
+#include <math.h>
 
 /*
     * Function to set the receiver position (must be threaded)
