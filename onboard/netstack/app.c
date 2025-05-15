@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <lwip/ip4_addr.h>
 #include <network.h>
-#include <olsr_hello.h>
 #include <iru.h>
 #include <forwarder.h>
 #include <custom_type.h>
@@ -18,9 +17,6 @@ int main() {
         return -1;
     }
 
-    int olsr_id = register_process_iru();
-    sleep(1); // Wait for the process to be registered
-    init_olsr_hello(olsr_id);
 
 
     while (1) {

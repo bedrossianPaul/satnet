@@ -26,7 +26,7 @@
 #define LWIP_UDP 1 // Enable UDP
 #define LWIP_ARP 1 // Enable ARP
 #define DEVTAP_IF "tap0" // Default tap interface name
-// #define SSIZE_MAX 1 // ssize_t type already defined (you may change that if you don't have it on your system)
+#define SSIZE_MAX 1 // ssize_t type already defined (you may change that if you don't have it on your system)
 
 #define IP_SOF_BROADCAST        1
 #define IP_SOF_BROADCAST_RECV   1

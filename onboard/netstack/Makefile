@@ -8,12 +8,12 @@ LWIP_DIR = lwip
 LWIP_CONTRIB_PORT_DIR = $(LWIP_DIR)/contrib/ports/unix/port
 
 # Include dirs
-INCLUDE_DIRS = -I$(SRC_DIR)/include -I$(LWIP_CONTRIB_PORT_DIR)/include -I$(LWIP_DIR)/src/include
+INCLUDE_DIRS = -I$(SRC_DIR)/include -I$(SRC_DIR)/src/olsr/inc -I$(LWIP_CONTRIB_PORT_DIR)/include -I$(LWIP_DIR)/src/include 
 
 # Compiler flags
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c17 -g -DLWIP_DEBUG $(INCLUDE_DIRS)
-LDFLAGS = -lutil -pthread
+LDFLAGS = -lutil -pthread -lm
 
 # Source files
 APP_SRC = $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/src/*/*.c)
